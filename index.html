@@ -1,0 +1,837 @@
+<html>
+<head>
+<title>MyExpenses Pro</title>
+<style>
+
+body {
+    color: #000;
+    font-family: arial;
+    font-size:13px;
+    margin:8px;
+    background:#F5F5F5;
+    word-wrap:break-word;
+}
+
+table{
+  font-family: arial;
+  font-size:13px;
+  word-wrap:break-word;
+}
+
+table.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #314179;border-collapse: collapse;}
+table.tftable th {font-size:12px;color:#ffffff;background-color:#637aad;border-width: 1px;padding: 8px;border-style: solid;border-color: #314179;text-align:left; word-wrap:break-word;}
+table.tftable tr {background-color:#ffffff;}
+table.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #314179;}
+
+.myButton {
+	-moz-box-shadow:inset 0px 1px 0px 0px #7a8eb9;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #7a8eb9;
+	box-shadow:inset 0px 1px 0px 0px #7a8eb9;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #637aad), color-stop(1, #5972a7));
+	background:-moz-linear-gradient(top, #637aad 5%, #5972a7 100%);
+	background:-webkit-linear-gradient(top, #637aad 5%, #5972a7 100%);
+	background:-o-linear-gradient(top, #637aad 5%, #5972a7 100%);
+	background:-ms-linear-gradient(top, #637aad 5%, #5972a7 100%);
+	background:linear-gradient(to bottom, #637aad 5%, #5972a7 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#637aad', endColorstr='#5972a7',GradientType=0);
+	background-color:#637aad;
+	border:1px solid #314179;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:3px 8px;
+	text-decoration:none;
+}
+.myButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #5972a7), color-stop(1, #637aad));
+	background:-moz-linear-gradient(top, #5972a7 5%, #637aad 100%);
+	background:-webkit-linear-gradient(top, #5972a7 5%, #637aad 100%);
+	background:-o-linear-gradient(top, #5972a7 5%, #637aad 100%);
+	background:-ms-linear-gradient(top, #5972a7 5%, #637aad 100%);
+	background:linear-gradient(to bottom, #5972a7 5%, #637aad 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#5972a7', endColorstr='#637aad',GradientType=0);
+	background-color:#5972a7;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+
+.green{
+	color:green;
+}
+.red{
+	color:red;
+}
+
+
+@media only screen (min-width:320px) {
+
+	.container{
+	
+		width:50%;
+		
+	}
+
+}
+
+</style>
+
+</head>
+<body onLoad="browserCheck()">
+<div class="header"><h3>MyExpenses Pro</h3></div>
+
+<div class="container">
+
+<div>
+
+<input type="button" class="myButton" id="income" onClick="toggle_visibility('income_section');" value="Incomes">
+<input type="button" class="myButton" id="outgoing"  onclick="toggle_visibility('outgoing_section');" value="Outgoing">
+<input type="button" class="myButton" id="expensesbtn"  onclick="toggle_visibility('expenses_section');" value="Expenses">
+<input type="button" class="myButton" id="summary"  onclick="toggle_visibility('summary_section');" value="Summary">
+<br><br>
+<form method="post">
+
+<div id="income_section" class="section" style="display:none;">
+	<h3>Incomes</h3>
+	<div id="incomeddl">&nbsp;</div>
+	<div>
+	Add New : <input type="text" id="addnewincometype" />
+	<input type="button" onClick="javascript: addNewIncomeOption()" value="Save" class="myButton" /> 
+	</div>
+	<br><br>
+	<div id="incomeListing">&nbsp;</div>
+</div>
+
+
+<div id="outgoing_section" class="section" style="display:none;">
+	<h3>Outgoings</h3>
+	<div id="outgoingddl">&nbsp;</div>
+
+	<div>
+	Add New : <input type="text" id="addnewoutgoingtype" />
+	<input type="button" onClick="javascript: addNewOutgoingOption()" value="Save" class="myButton" /> 
+	</div>
+	<br><br>
+	<div id="outgoingListing">&nbsp;</div>
+</div>
+
+
+<div id="expenses_section" class="section">
+<h3>Expenses</h3>
+
+	<table border="1" width="100%" class="tftable">
+	<tr><th colspan="2">Expense Details</th></tr>
+	<tr>
+		<td>Type</td>
+		<td><div id="expddl">&nbsp;</div></td>
+	</tr>
+	<tr>
+		<td>Category</td>
+		<td><select id="catgoryddl"><option value="0">Select One</option></select></td>
+	</tr>
+	<tr>
+		<td>Amount</td>
+		<td><input type="text" name="amount" id="amount" value="" /></td>
+	</tr>
+	<tr>
+		<td>Date</td>
+		<td>
+		<div id="expdate"></div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"> &nbsp; 
+<input type="button" name="submit" onClick="saveExpenses()" value=" Save " class="myButton" /> &nbsp; <input type="button" name="reset" onClick="resetExpenses()" value=" Reset " class="myButton" /> &nbsp; 
+		</td>
+	</tr>
+	</table>
+
+<br><br>
+
+<div id="expensesListing">&nbsp;</div>
+
+</div>
+
+
+	</form>
+
+<div id="summary_section" class="section" style="display:none;">
+<h3>Summary</h3>
+Select Summary Range
+<select id="summaryrange" name="summaryrange" onChange="summaryRange(this.value)">
+<option value="0">Select One</option>
+<option value="Today">Today</option>
+<option value="Yesterday">Yesterday</option>
+<option value="ThisWeek">This Week</option>
+<option value="LastWeek">Last Week</option>
+<option value="ThisMonth">This Month</option>
+<option value="LastMonth">Last Month</option>
+</select>
+<br><br>
+<div id="summarylist">&nbsp;</div>
+<br>
+</div>
+
+
+</div> <!-- End of class container -->
+
+<div align="right"><h3>&copy; JanTech <script type="text/javascript"> var today1=new Date(); var curyear1=today1.getFullYear(); document.write(curyear1); </script></h3></div>
+</body>
+<script type="text/javascript">
+
+var today=new Date();
+
+var curday=today.getDate();
+var curmon=today.getMonth();
+var curyear=today.getFullYear();
+
+function browserCheck() {
+
+  if (typeof(localStorage) == 'undefined' ) {
+    alert('Your browser does not support HTML5 localStorage. Try upgrading.');
+  }else{
+  loadExpForm();
+	LoadDefaultConfig();
+  }
+
+}
+
+function LoadDefaultConfig(){
+
+	var incomesArray = ["Salary", "Over Time Work", "Special Allowance ", "Project Work"];
+	var outgoingArray = ["Rent", "Food", "Travel Allowance", "Tea & Coffee"];
+			
+	var appName=localStorage.getItem('appName');
+
+	if(appName){
+
+		var icarr= localStorage.getItem('incomesArray');
+
+		loadIncomeDropDown();
+		loadIncomeArrayList();
+
+		loadOutgoingDropDown();
+		loadOutgoingArrayList();
+
+		loadExpensesArrayList();
+
+
+	}else{
+		var newAppName = prompt("Please enter your name");
+		if (newAppName != null) {
+			localStorage.setItem('appName', JSON.stringify(newAppName));
+			localStorage.setItem('incomesArray', JSON.stringify(incomesArray));
+			localStorage.setItem('outgoingArray', JSON.stringify(outgoingArray));
+			window.location.reload();
+		}
+	}
+	
+}
+
+// Start of Income Configuration
+
+function addNewIncomeOption()
+{
+	var mytxt=document.getElementById('addnewincometype').value;
+
+	var incomeObject = JSON.parse(localStorage.getItem("incomesArray"));
+
+	incomeObject.push(mytxt.trim());
+	
+	localStorage.setItem('incomesArray', JSON.stringify(incomeObject));
+
+	loadIncomeDropDown();
+	loadIncomeArrayList();
+	
+	document.getElementById('addnewincometype').value=""; 
+}
+
+function loadIncomeDropDown()
+{
+	var incomeObject = JSON.parse(localStorage.getItem("incomesArray"));
+	var selectHTML = "";
+	selectHTML="<select id='income' name='income'>";
+	for(i=0; i<incomeObject.length; i=i+1){
+		selectHTML+= "<option value='"+incomeObject[i]+"'>"+incomeObject[i]+"</option>";
+	}
+	selectHTML += "</select>";
+
+	//document.getElementById('incomeddl').innerHTML=selectHTML;
+}
+
+function loadIncomeArrayList()
+{
+	var incomeObject = JSON.parse(localStorage.getItem("incomesArray"));
+
+	tableHTML="<table border='1' cellpadding='8' class='tftable'>";
+	tableHTML+= "<tr><th>S.No</td><th>Category</th><th>Action</th></tr>";
+	var sn=0;
+	for(i=0; i<incomeObject.length; i=i+1){
+		sn=i;
+		sn=sn+1;
+		tableHTML+= "<tr><td>"+sn+"</td><td> "+incomeObject[i]+"</td>";
+		tableHTML+= '<td><span style="text-decoration:underline; " onclick="javascript: removeArrayElement(\'incomesArray\' , \''+incomeObject[i].trim()+'\')">Delete</span></td></tr>';
+	}
+	tableHTML += "</table>";
+
+	document.getElementById('incomeListing').innerHTML=tableHTML;
+}
+
+// End of Income Configuration
+
+
+// Start of Outgoing Configuration
+
+function addNewOutgoingOption()
+{
+	var mytxt=document.getElementById('addnewoutgoingtype').value;
+
+	var outgoingObject = JSON.parse(localStorage.getItem("outgoingArray"));
+
+	outgoingObject.push(mytxt.trim());
+	
+	localStorage.setItem('outgoingArray', JSON.stringify(outgoingObject));
+
+	loadOutgoingDropDown();
+	loadOutgoingArrayList();
+	
+	document.getElementById('addnewoutgoingtype').value=""; 
+}
+
+function loadOutgoingDropDown()
+{
+	var outgoingObject = JSON.parse(localStorage.getItem("outgoingArray"));
+	var selectHTML = "";
+	selectHTML="<select id='outgoing' name='outgoing'>";
+	for(i=0; i<outgoingObject.length; i=i+1){
+		selectHTML+= "<option value='"+outgoingObject[i]+"'>"+outgoingObject[i]+"</option>";
+	}
+	selectHTML += "</select>";
+
+	//document.getElementById('outgoingddl').innerHTML=selectHTML;
+}
+
+function loadOutgoingArrayList()
+{
+	var outgoingObject = JSON.parse(localStorage.getItem("outgoingArray"));
+
+	tableHTML="<table border='1' cellpadding='8' class='tftable'>";
+	tableHTML+= "<tr><th>S.No</th><th>Category</th><th>Action</th></tr>";
+	var sn=0;
+	for(i=0; i<outgoingObject.length; i=i+1){
+		sn=i;
+		sn=sn+1;
+
+		tableHTML+= "<tr><td>"+sn+"</td><td> "+outgoingObject[i]+"</td>";
+		tableHTML+= '<td><span onclick="javascript: removeArrayElement(\'outgoingArray\' , \''+outgoingObject[i].trim()+'\')">Delete</span></td></tr>';
+	}
+	tableHTML += "</table>";
+
+	document.getElementById('outgoingListing').innerHTML=tableHTML;
+}
+
+// End of Outgoing Configuration
+
+// Remove Element from an array
+
+function removeArrayElement(arrName, item)
+{
+	var itemtrim=item.trim();
+
+	var res=confirm("Are you sure do you want to delete this?");
+	if(res==true)
+	{	
+		var incomeObject = JSON.parse(localStorage.getItem(arrName));
+
+		var newicArray= [];
+		for(i=0; i<incomeObject.length; i=i+1){
+			newicArray.push(incomeObject[i]);
+		}
+
+		for(i=0; i<incomeObject.length; i=i+1){
+			if (newicArray[i] === itemtrim) 
+				newicArray.splice(i, 1);
+		}
+
+		localStorage.setItem(arrName, JSON.stringify(newicArray));
+
+		loadIncomeDropDown();
+		loadIncomeArrayList();
+		
+		loadOutgoingDropDown();
+		loadOutgoingArrayList();
+
+		loadExpensesArrayList();
+		
+	}
+
+}
+
+
+function loadExpForm()
+{
+	var exptypeHTML="<select id='exptype' name='exptype' onChange='configureDropDownLists(this)'><option value='0'>Select One</option><option value='incomesArray'>Income</option><option value='outgoingArray'>Outgoing</option></select>";
+
+	document.getElementById('expddl').innerHTML=exptypeHTML;
+
+	var expdateHTML="<select id='expday' name='expday'>";
+	expdateHTML+="<option value='0'>Select</option>";
+	
+	for(var i=1;i<=31;i++)
+	{
+		if(i==curday)
+			expdateHTML+="<option value='"+i+"' selected >"+i+"</option>";
+		else
+			expdateHTML+="<option value='"+i+"'>"+i+"</option>";
+	}
+	
+	expdateHTML+="</select>";
+	
+	expdateHTML+="&nbsp; <select id='expmon' name='expmon'>";
+	expdateHTML+="<option value='0'>Select</option>";
+	var moy = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+	for(var i=0;i<moy.length;i++)
+	{
+		if(i==curmon)
+			expdateHTML+="<option value='"+moy[i]+"' selected >"+moy[i]+"</option>";
+		else
+			expdateHTML+="<option value='"+moy[i]+"'>"+moy[i]+"</option>";
+	}
+	
+	expdateHTML+="</select>";
+	
+	expdateHTML+="&nbsp; <select id='expyear' name='expyear'>";
+	expdateHTML+="<option value='0'>Select</option>";
+	
+	for(var i=2010;i<=curyear;i++)
+	{
+		if(i==curyear)
+			expdateHTML+="<option value='"+i+"' selected >"+i+"</option>";
+		else
+			expdateHTML+="<option value='"+i+"'>"+i+"</option>";
+	}
+	
+	expdateHTML+="</select>";
+
+	document.getElementById('expdate').innerHTML=expdateHTML;
+	
+}
+
+function loadExpensesArrayList()
+{
+	var expensesObject = JSON.parse(localStorage.getItem("expensesArray"));
+
+	if(expensesObject)
+	{
+		tableHTML="<table border='1' cellpadding='8' class='tftable'>";
+		tableHTML+= "<tr><th>S.No</th><th>Expenses List</th><th>Action</th></tr>";
+		var sn=0;
+		for(i=0; i<expensesObject.length; i=i+1){
+			sn=i;
+			sn=sn+1;
+
+			var arrstr=expensesObject[i];
+
+			var expvals=arrstr.split("||"); 
+
+			var exptypen="";
+
+			if(expvals[0]=="incomesArray")
+				exptypen="Income";
+			else
+				exptypen="Outgoing";
+			
+			tableHTML+= "<tr><td>"+sn+"</td><td>"+expvals[3]+" / "+exptypen+" / "+expvals[1]+" / "+expvals[2]+"</td>";
+
+	tableHTML+= '<td><span style="text-decoration:underline; " onclick="javascript: removeArrayElement(\'expensesArray\' , \''+expensesObject[i].trim()+'\')">Delete</span></td></tr>';
+	
+		}
+		tableHTML += "</table>";
+
+		document.getElementById('expensesListing').innerHTML=tableHTML;
+	}
+
+}
+
+function saveExpenses(){
+
+	var exptype=document.getElementById('exptype').value;
+	var expcat=document.getElementById('catgoryddl').value;
+	var amount1=document.getElementById('amount').value;
+	var expday=document.getElementById('expday').value;
+	var expmon=document.getElementById('expmon').value;
+	var expyear=document.getElementById('expyear').value;
+
+	if(exptype=="0")
+	{
+		alert("Please Select Expense Type!");
+	}
+	else if(expcat=="0")
+	{
+		alert("Please Select Expense Category!");
+	}else if(amount1=="")
+	{
+		alert("Please Fill Amount!");
+	}else if(expday=="0")
+	{
+		alert("Please Select Day!");
+	}else if(expmon=="0" || expmon=="")
+	{
+		alert("Please Select Month!");
+	}else if(expyear=="0")
+	{
+		alert("Please Select Year!");
+	}
+	else
+	{
+		var expstring=exptype+"||"+expcat+"||"+amount1+"||"+expday+"-"+expmon+"-"+expyear;
+				
+		var expArr=localStorage.getItem('expensesArray');
+				
+		if(expArr){
+		
+			var expObject = JSON.parse(localStorage.getItem("expensesArray"));
+		
+			expObject.push(expstring.trim());
+
+			localStorage.setItem('expensesArray', JSON.stringify(expObject));
+				
+		}else{
+			var exparrnew=[];
+
+			exparrnew.push(expstring.trim());
+
+			localStorage.setItem('expensesArray', JSON.stringify(exparrnew));
+			
+		}
+		
+		document.getElementById('exptype').value="0";
+		document.getElementById('catgoryddl').value="0";
+		document.getElementById('amount').value="";
+		document.getElementById('expday').value=curday;
+		document.getElementById('expmon').value=curmon;
+		document.getElementById('expyear').value=curyear;
+
+	}
+
+}
+
+function resetExpenses(){
+
+	document.getElementById('exptype').value="0";
+	document.getElementById('catgoryddl').value="0";
+	document.getElementById('amount').value="";
+	document.getElementById('expday').value=curday;
+	document.getElementById('expmon').value=curmon;
+	document.getElementById('expyear').value=curyear;
+
+	return true;
+
+}
+
+function configureDropDownLists(ddl1) {
+
+	var ddl2="catgoryddl";
+			
+	var outgoingObject = JSON.parse(localStorage.getItem("outgoingArray"));
+	var incomeObject = JSON.parse(localStorage.getItem("incomesArray"));
+
+        switch (ddl1.value) {
+            case 'incomesArray':
+                document.getElementById(ddl2).options.length = 0;
+                for (i = 0; i < incomeObject.length; i++) {
+                    createOption(document.getElementById(ddl2), incomeObject[i], incomeObject[i]);
+                }
+                break;
+            case 'outgoingArray':
+                document.getElementById(ddl2).options.length = 0; 
+            	for (i = 0; i < outgoingObject.length; i++) {
+               		createOption(document.getElementById(ddl2), outgoingObject[i], outgoingObject[i]);
+                }
+                break;
+            default:
+                    document.getElementById(ddl2).options.length = 0;
+                	break;
+        }
+
+}
+
+function createOption(ddl, text, value) {
+        var opt = document.createElement('option');
+        opt.value = value;
+        opt.text = text;
+        ddl.options.add(opt);
+}
+
+function toggle_visibility(id) {
+    	var thelist = document.getElementsByClassName("section");
+    	for (var i = 0; i < thelist.length; i++) {
+    		thelist[i].style.display = 'none';
+    	}
+    	var e = document.getElementById(id);
+    	if(e.style.display == 'block') {
+    		e.style.display = 'none';
+    	} else {
+    		e.style.display = 'block';
+    	}
+}
+
+function consolidatedFilters(passedArray, passedFilter) {
+
+	var filteredArray=[];
+
+	var index=0;
+
+	for (var k = 0; k < passedFilter.length; k++) {
+
+		var searchExp = new RegExp(passedFilter[k]);
+
+		var foundarrayNew = [];
+
+		var j = 0;
+		for ( var i = 0; i < passedArray.length; i++ ) {
+
+		   if ( searchExp.test(passedArray[i]) ) {
+		        foundarrayNew[j] = passedArray[i];
+			filteredArray[index] = passedArray[i];
+			index++;
+		      j++
+		   }
+
+		}
+
+	}
+	return filteredArray;
+}
+
+Date.prototype.addDays = function(days) {
+    var dat = new Date(this.valueOf())
+    dat.setDate(dat.getDate() + days);
+    return dat;
+}
+
+function getDates(startDate, stopDate) {
+
+    var moy = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    var dateArray = new Array();
+    var currentDate = startDate;
+    while (currentDate <= stopDate) {
+
+	var datestr = currentDate.getDate()+"-"+moy[currentDate.getMonth()]+"-"+currentDate.getFullYear();
+
+	dateArray.push(datestr);
+	currentDate = currentDate.addDays(1);
+    }
+    return dateArray;
+}
+
+function summaryRange(range){
+
+	var today=new Date();
+
+	var curday=today.getDate();
+	var curmon=today.getMonth();
+	var curyear=today.getFullYear();
+
+	var moy = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+
+	if(range=="0")
+	{
+		alert("Please Select any Summary Range!");
+	}else{
+		
+		var summaryHTML="";
+
+		var foundarray=[];	
+	
+		var expObject = JSON.parse(localStorage.getItem("expensesArray"));
+		
+	if(expObject)
+	{
+
+		if(range=="Today")
+		{
+			sDate=curday+"-"+moy[curmon]+"-"+curyear;
+	
+			var searchExp = new RegExp(sDate)
+			
+			var j = 0;
+			for ( var i = 0; i < expObject.length; i++ ) {
+
+			   if ( searchExp.test(expObject[i]) ) {
+			      foundarray[j] = expObject[i]
+			      j++
+			   }
+
+			}
+
+			summaryHTML+="<b>Viewing Summary Range : "+range+" [ "+sDate+" ]</b><br>";
+
+		}else if(range=="Yesterday"){
+
+			var yesday=curday-1;
+
+			sDate=yesday+"-"+moy[curmon]+"-"+curyear;
+	
+			var searchExp = new RegExp(sDate)
+			
+			var j = 0;
+			for ( var i = 0; i < expObject.length; i++ ) {
+
+			   if ( searchExp.test(expObject[i]) ) {
+			      foundarray[j] = expObject[i]
+			      j++
+			   }
+
+			}
+
+			summaryHTML+="<b>Viewing Summary Range : "+range+" [ "+sDate+" ]</b><br>";
+
+		}else if(range=="ThisWeek"){
+			
+			var curr = new Date; // get current date
+			var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+			var last = first + 6; // last day is the first day + 6
+
+			var firstday = new Date(curr.setDate(first));
+			var lastday = new Date(curr.setDate(last));
+
+			var startdate= firstday.getDate()+"-"+moy[firstday.getMonth()]+"-"+firstday.getFullYear();
+			var enddate= lastday.getDate()+"-"+moy[lastday.getMonth()]+"-"+lastday.getFullYear();
+
+			var userPassedFilter = getDates(firstday,lastday);
+	
+			foundarray = consolidatedFilters(expObject, userPassedFilter);
+
+			summaryHTML+="<b>Viewing Summary Range : "+range+" [ "+startdate+" - "+enddate+" ]</b><br>";
+
+		}
+		else if(range=="LastWeek"){
+			
+			var curr = new Date; // get current date
+			var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+			var last = first - 6; // last day is the first day + 6
+
+			var firstday = new Date(curr.setDate(first));
+			var lastday = new Date(curr.setDate(last));
+
+			var startdate= firstday.getDate()+"-"+moy[firstday.getMonth()]+"-"+firstday.getFullYear();
+			var enddate= lastday.getDate()+"-"+moy[lastday.getMonth()]+"-"+lastday.getFullYear();
+
+			var userPassedFilter = getDates(lastday,firstday);
+	
+			foundarray = consolidatedFilters(expObject, userPassedFilter);
+
+			summaryHTML+="<b>Viewing Summary Range : "+range+" [ "+enddate+" - "+startdate+" ]</b><br>";
+
+		}
+		else if(range=="ThisMonth"){
+			
+			var curr = new Date; // get current date
+			var first = curr.getDay(); // First day is the day of the month - the day of the week
+			var last = first + 31; // last day is the first day + 6
+
+			var startdate= "1-"+moy[curr.getMonth()]+"-"+curr.getFullYear();
+			var enddate= "31-"+moy[curr.getMonth()]+"-"+curr.getFullYear();
+
+			var firstday = new Date(curr.setDate(first));
+			var lastday = new Date(curr.setDate(last));
+
+			var userPassedFilter = getDates(firstday,lastday);
+	
+			foundarray = consolidatedFilters(expObject, userPassedFilter);
+
+			summaryHTML+="<b>Viewing Summary Range : "+range+" [ "+startdate+" - "+enddate+" ]</b><br>";
+
+		}
+		else if(range=="LastMonth"){
+			
+			var curr = new Date; // get current date
+			
+			var startdate= "1-"+moy[curr.getMonth()-1]+"-"+curr.getFullYear();
+			var enddate= "31-"+moy[curr.getMonth()-1]+"-"+curr.getFullYear();
+
+			var firstday = new Date(curr.getFullYear(), curr.getMonth() + 0, -30, 23, 59, 59);
+			var lastday =new Date(curr.getFullYear(), curr.getMonth() + 0, 0, 23, 59, 59);
+
+			var userPassedFilter = getDates(firstday,lastday);
+	
+			foundarray = consolidatedFilters(expObject, userPassedFilter);
+
+			summaryHTML+="<b>Viewing Summary Range : "+range+" [ "+startdate+" - "+enddate+" ]</b><br>";
+
+		}
+	
+		summaryHTML+="<br><table border='1' width='100%' class='tftable'>";
+		summaryHTML+='<tr><th width="5%" rowspan="2" align="middle">#</th><th width="10%" rowspan="2" align="middle">Date</th><th width="35%" rowspan="2" >Category</th><th colspan="2" align="center"><center>Summary</center></th></th><tr><th width="10%" align="center">Incomes</th><th width="10%" align="center">Outgoings</th></tr>';
+		
+		var incomeTotal=0;
+		var outgoingTotal=0;
+
+		var sn=0;
+
+		for(var i=0; i<foundarray.length; i++)
+		{
+			var arrstr=foundarray[i];
+			var expvals=arrstr.split("||"); 
+		
+			sn=i;
+			sn=sn+1;
+
+			summaryHTML+='<tr><td>'+sn+'</td><td>'+expvals[3]+'</td><td>'+expvals[1]+'</td>';
+			summaryHTML+='<td align="right"> &nbsp;';
+			if(expvals[0].trim()=="incomesArray")
+			{ 
+				summaryHTML+= "<span>"+expvals[2]+"</span>";
+				incomeTotal= +incomeTotal + +expvals[2];
+			}
+			summaryHTML+='</td>';
+			summaryHTML+='<td align="right"> &nbsp;';
+			if(expvals[0]=="outgoingArray")
+			{
+				summaryHTML+= "<span> "+expvals[2]+"</span>";
+				outgoingTotal= +outgoingTotal + +expvals[2];
+			}
+			summaryHTML+='</td>';
+
+			summaryHTML+='</tr>';
+			
+		}
+
+		summaryHTML+='<tr><td colspan="3" align="right"><b>Sub Total</b></td><td align="right"><b>'+incomeTotal+'</b></td><td align="right"><b>'+outgoingTotal+'</b></td></tr>';
+
+		var sum= +incomeTotal - +outgoingTotal;
+		
+		var style="";
+
+		if(sum>0)
+			style="green";
+		else
+			style="red";
+
+		summaryHTML+='<tr><td colspan="4" align="right"><b>Net Amount [ '+incomeTotal+' - '+outgoingTotal+' ]</b></td><td align="right"><b class="'+style+'">'+sum+'</b></td></tr>';
+
+		summaryHTML+="</table>";
+		
+		document.getElementById('summarylist').innerHTML=summaryHTML;
+
+	   
+	   }else{
+		alert("No Records Found!");
+	   }
+
+	}
+
+	
+	
+}
+
+</script>
+</html>
